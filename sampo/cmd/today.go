@@ -11,15 +11,12 @@ import (
 // todayCmd represents the today command
 var todayCmd = &cobra.Command{
 	Use:   "today",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Show today's agenda",
+	Long: `Sampo is a personal information manager (PIM) app.
+This is the command-line interface (CLI) for Sampo.`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("today called")
+		fmt.Println("today called") // TODO
 	},
 }
 

@@ -12,20 +12,14 @@ import (
 )
 
 var cfgFile string
+var Verbose bool
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sampo",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Short: "Sampo command-line interface (CLI)",
+	Long: `Sampo is a personal information manager (PIM) app.
+This is the command-line interface (CLI) for Sampo.`,
+	Version: "0.0.0",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -39,11 +33,10 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sampo.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Set config file (default: $HOME/.sampo.yaml)")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Be verbose")
+	rootCmd.SetVersionTemplate(`Sampo CLI {{printf "%s" .Version}}
+`)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
