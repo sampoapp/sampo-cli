@@ -24,21 +24,21 @@ This is the command-line interface (CLI) for Sampo.`,
 		}
 		defer db.Close()
 
-		rows, err := schema.QueryEntities(db)
+		cursor, err := schema.QueryEntities(db)
 		if err != nil {
 			panic(err)
 		}
-		defer rows.Close()
+		defer cursor.CloseCursor()
 
-		for rows.Next() {
-			entity, err := schema.ScanEntity(rows)
+		for cursor.Next() {
+			entity, err := schema.ScanEntity(cursor)
 			if err != nil {
 				panic(err)
 			}
 			fmt.Println(entity.UUID)
 		}
 
-		err = rows.Err()
+		err = cursor.Err()
 		if err != nil {
 			panic(err)
 		}

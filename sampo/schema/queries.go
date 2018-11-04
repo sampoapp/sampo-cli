@@ -3,16 +3,14 @@
 package schema
 
 import (
-	"database/sql"
-
 	"github.com/sampoapp/sampo-cli/sampo/store"
 )
 
 // QueryEntities
-func QueryEntities(db *store.Store) (*sql.Rows, error) {
-	rows, err := db.Query("SELECT id, uuid FROM data")
+func QueryEntities(db *store.Store) (*store.Cursor, error) {
+	cursor, err := db.Query("SELECT id, uuid FROM data")
 	if err != nil {
 		return nil, err
 	}
-	return rows, nil
+	return cursor, nil
 }

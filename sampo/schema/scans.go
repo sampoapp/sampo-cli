@@ -2,14 +2,12 @@
 
 package schema
 
-import (
-	"database/sql"
-)
+import "github.com/sampoapp/sampo-cli/sampo/store"
 
 // ScanEntity
-func ScanEntity(rows *sql.Rows) (*Entity, error) {
+func ScanEntity(cursor *store.Cursor) (*Entity, error) {
 	var entity Entity
-	err := rows.Scan(&entity.ID, &entity.UUID)
+	err := cursor.Scan(&entity.ID, &entity.UUID)
 	if err != nil {
 		return nil, err
 	}

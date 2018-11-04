@@ -2,15 +2,11 @@
 
 package store
 
-import (
-	"database/sql"
-)
-
 // Query
-func (store *Store) Query(sql string) (*sql.Rows, error) {
+func (store *Store) Query(sql string) (*Cursor, error) {
 	rows, err := store.db.Query(sql)
 	if err != nil {
 		return nil, err
 	}
-	return rows, nil
+	return &Cursor{rows}, nil
 }
