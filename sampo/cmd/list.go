@@ -5,6 +5,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/sampoapp/sampo-cli/sampo/schema"
 	"github.com/sampoapp/sampo-cli/sampo/store"
 	"github.com/spf13/cobra"
 )
@@ -23,14 +24,14 @@ This is the command-line interface (CLI) for Sampo.`,
 		}
 		defer db.Close()
 
-		rows, err := store.QueryEntities(db)
+		rows, err := schema.QueryEntities(db)
 		if err != nil {
 			panic(err)
 		}
 		defer rows.Close()
 
 		for rows.Next() {
-			entity, err := store.ScanEntity(rows)
+			entity, err := schema.ScanEntity(rows)
 			if err != nil {
 				panic(err)
 			}

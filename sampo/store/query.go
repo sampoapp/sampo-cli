@@ -6,9 +6,9 @@ import (
 	"database/sql"
 )
 
-// QueryEntities
-func QueryEntities(store *Store) (*sql.Rows, error) {
-	rows, err := store.db.Query("SELECT id, uuid FROM data")
+// Query
+func (store *Store) Query(sql string) (*sql.Rows, error) {
+	rows, err := store.db.Query(sql)
 	if err != nil {
 		return nil, err
 	}
