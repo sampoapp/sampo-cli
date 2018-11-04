@@ -5,9 +5,7 @@ package cmd
 import (
 	"fmt"
 
-	"database/sql"
-
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/sampoapp/sampo-cli/sampo/store"
 	"github.com/spf13/cobra"
 )
 
@@ -19,25 +17,24 @@ var listCmd = &cobra.Command{
 This is the command-line interface (CLI) for Sampo.`,
 	Args: cobra.RangeArgs(0, 1),
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := sql.Open("sqlite3", "./app.db")
+		db, err := store.Open("./app.db")
 		if err != nil {
 			panic(err)
 		}
 		defer db.Close()
 
-		rows, err := db.Query("SELECT uuid FROM data")
+		rows, err := store.QueryEntities(db)
 		if err != nil {
 			panic(err)
 		}
 		defer rows.Close()
 
 		for rows.Next() {
-			var uuid string
-			err = rows.Scan(&uuid)
+			entity, err := store.ScanEntity(rows)
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(uuid)
+			fmt.Println(entity.UUID)
 		}
 
 		err = rows.Err()
