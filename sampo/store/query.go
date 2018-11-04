@@ -2,11 +2,13 @@
 
 package store
 
+import "github.com/pkg/errors"
+
 // Query
 func (store *Store) Query(sql string) (*Cursor, error) {
 	rows, err := store.db.Query(sql)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "Query failed")
 	}
 	return &Cursor{rows}, nil
 }

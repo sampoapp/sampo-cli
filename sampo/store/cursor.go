@@ -4,6 +4,8 @@ package store
 
 import (
 	"database/sql"
+
+	"github.com/pkg/errors"
 )
 
 type Cursor struct {
@@ -12,7 +14,11 @@ type Cursor struct {
 
 // Close
 func (cursor *Cursor) CloseCursor() error {
-	return cursor.rows.Close()
+	err := cursor.rows.Close()
+	if err != nil {
+		return errors.Wrap(err, "CloseCursor failed")
+	}
+	return nil
 }
 
 // Err
@@ -27,5 +33,9 @@ func (cursor *Cursor) Next() bool {
 
 // Scan
 func (cursor *Cursor) Scan(dest ...interface{}) error {
-	return cursor.rows.Scan(dest)
+	err := cursor.rows.Scan(dest...)
+	if err != nil {
+		return errors.Wrap(err, "Scan failed")
+	}
+	return nil
 }

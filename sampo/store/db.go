@@ -6,6 +6,7 @@ import (
 	"database/sql"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/pkg/errors"
 )
 
 type Store struct {
@@ -16,12 +17,16 @@ type Store struct {
 func Open(path string) (*Store, error) {
 	db, err := sql.Open("sqlite3", path)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "Open failed")
 	}
 	return &Store{db}, nil
 }
 
 // Close
 func (store *Store) Close() error {
-	return store.db.Close()
+	err := store.db.Close()
+	if err != nil {
+		return errors.Wrap(err, "Close failed")
+	}
+	return nil
 }

@@ -2,14 +2,17 @@
 
 package schema
 
-import "github.com/sampoapp/sampo-cli/sampo/store"
+import (
+	"github.com/pkg/errors"
+	"github.com/sampoapp/sampo-cli/sampo/store"
+)
 
 // ScanEntity
 func ScanEntity(cursor *store.Cursor) (*Entity, error) {
 	var entity Entity
 	err := cursor.Scan(&entity.ID, &entity.UUID)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "ScanEntity failed")
 	}
 	return &entity, nil
 }
