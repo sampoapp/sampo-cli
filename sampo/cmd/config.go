@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // configCmd represents the config command
@@ -14,16 +15,20 @@ var configCmd = &cobra.Command{
 	Short: "Show configuration variables",
 	Long: `Sampo is a personal information manager (PIM) app.
 This is the command-line interface (CLI) for Sampo.`,
-	Args: cobra.MinimumNArgs(1),
+	Args: cobra.MinimumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("config has not been implemented yet") // TODO
+		if len(args) == 0 {
+			for _, key := range viper.AllKeys() {
+				fmt.Printf("%s=%s\n", key, viper.GetString(key))
+			}
+		} else {
+			for _, key := range args {
+				fmt.Printf("%s=%s\n", key, viper.GetString(key))
+			}
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(configCmd)
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// configCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

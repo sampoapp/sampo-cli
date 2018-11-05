@@ -4,6 +4,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,13 +24,14 @@ This is the command-line interface (CLI) for Sampo.`,
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "Set config file (default: $HOME/.sampo/config.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", "", "Set config file (default: $HOME/.sampo/config.yaml)")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "Enable debugging")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Be verbose")
 	rootCmd.SetVersionTemplate(`Sampo CLI {{printf "%s" .Version}}
@@ -39,19 +41,21 @@ func init() {
 // initConfig reads the configuration file and environment variables.
 func initConfig() {
 	if configFile != "" {
-		// Use config file from the flag:
+		// Use the specified config file:
 		viper.SetConfigFile(configFile)
 	} else {
-		// Search for config under the home directory:
+		// Search for config file in the current directory and under the home directory:
 		viper.SetConfigName("config")
-		viper.AddConfigPath("$HOME/.sampo")
 		viper.AddConfigPath(".")
+		viper.AddConfigPath("$HOME/.sampo")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in:
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		if debug {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
+		}
 	}
 }
