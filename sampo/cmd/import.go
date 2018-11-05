@@ -16,18 +16,12 @@ var importCmd = &cobra.Command{
 This is the command-line interface (CLI) for Sampo.`,
 	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("import called") // TODO
+		fmt.Println("import has not been implemented yet") // TODO
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(importCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// importCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

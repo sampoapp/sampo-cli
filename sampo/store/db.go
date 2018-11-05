@@ -13,6 +13,11 @@ type Store struct {
 	db *sql.DB
 }
 
+// OpenDefault
+func OpenDefault() (*Store, error) {
+	return Open("./app.db")
+}
+
 // Open
 func Open(path string) (*Store, error) {
 	db, err := sql.Open("sqlite3", path)

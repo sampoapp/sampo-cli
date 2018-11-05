@@ -18,7 +18,7 @@ var listCmd = &cobra.Command{
 This is the command-line interface (CLI) for Sampo.`,
 	Args: cobra.RangeArgs(0, 1),
 	Run: func(cmd *cobra.Command, args []string) {
-		db, err := store.Open("./app.db")
+		db, err := store.OpenDefault()
 		if err != nil {
 			panic(err)
 		}
@@ -47,12 +47,6 @@ This is the command-line interface (CLI) for Sampo.`,
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
