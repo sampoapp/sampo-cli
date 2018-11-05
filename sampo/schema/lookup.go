@@ -3,12 +3,13 @@
 package schema
 
 import (
+	"github.com/gofrs/uuid"
 	"github.com/pkg/errors"
 	"github.com/sampoapp/sampo-cli/sampo/store"
 )
 
 // LookupEntity
-func LookupEntity(db *store.Store, uuid string) (*Entity, error) {
+func LookupEntity(db *store.Store, uuid uuid.UUID) (*Entity, error) {
 	var entity *Entity
 
 	cursor, err := db.Query("SELECT id, uuid FROM data WHERE uuid = ?", uuid)

@@ -4,6 +4,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -17,6 +18,7 @@ This is the command-line interface (CLI) for Sampo.`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("today has not been implemented yet") // TODO
+		os.Exit(1)
 	},
 }
 

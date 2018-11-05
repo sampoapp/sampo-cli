@@ -5,6 +5,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/gofrs/uuid"
 	"github.com/sampoapp/sampo-cli/sampo/schema"
 	"github.com/sampoapp/sampo-cli/sampo/store"
 	"github.com/spf13/cobra"
@@ -25,7 +26,12 @@ This is the command-line interface (CLI) for Sampo.`,
 		defer db.Close()
 
 		for _, arg := range args {
-			entity, err := schema.LookupEntity(db, arg)
+			uuid, err := uuid.FromString(arg)
+			if err != nil {
+				panic(err)
+			}
+
+			entity, err := schema.LookupEntity(db, uuid)
 			if err != nil {
 				panic(err)
 			}
