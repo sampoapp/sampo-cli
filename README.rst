@@ -6,6 +6,14 @@ Sampo Command-Line Interface (CLI)
    :alt: Project license
    :target: https://unlicense.org
 
+.. image:: https://img.shields.io/badge/godoc-reference-blue.svg
+   :alt: GoDoc reference
+   :target: https://godoc.org/github.com/sampoapp/sampo-cli
+
+.. image:: https://goreportcard.com/badge/github.com/sampoapp/sampo-cli
+   :alt: Go Report Card score
+   :target: https://goreportcard.com/report/github.com/sampoapp/sampo-cli
+
 .. image:: https://img.shields.io/travis/sampoapp/sampo-cli/master.svg
    :alt: Travis CI build status
    :target: https://travis-ci.org/sampoapp/sampo-cli
@@ -37,7 +45,7 @@ Reference
      history     Show history
      import      Import data
      list        List data
-     search      Search data.
+     search      Search data
      today       Show today's agenda
      tomorrow    Show tomorrow's agenda
 

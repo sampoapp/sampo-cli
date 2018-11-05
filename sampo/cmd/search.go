@@ -11,7 +11,7 @@ import (
 // SearchCmd describes and implements the `sampo search` command
 var SearchCmd = &cobra.Command{
 	Use:   "search [keyword]",
-	Short: "Search data.",
+	Short: "Search data",
 	Long: `Sampo is a personal information manager (PIM) app.
 This is the command-line interface (CLI) for Sampo.`,
 	Args: cobra.ExactArgs(1),
