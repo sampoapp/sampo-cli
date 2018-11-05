@@ -18,3 +18,33 @@ Installation
 ::
 
    $ go get -u github.com/sampoapp/sampo-cli/sampo
+
+Reference
+=========
+
+::
+
+   Sampo is a personal information manager (PIM) app.
+   This is the command-line interface (CLI) for Sampo.
+
+   Usage:
+     sampo [command]
+
+   Available Commands:
+     config      Show configuration variables
+     export      Export data
+     help        Help about any command
+     history     Show history
+     import      Import data
+     list        List data
+     search      Search data.
+     today       Show today's agenda
+     tomorrow    Show tomorrow's agenda
+
+   Flags:
+     -C, --config string   Set config file (default: $HOME/.sampo/config.yaml)
+     -d, --debug           Enable debugging
+     -h, --help            help for sampo
+     -v, --verbose         Be verbose
+
+   Use "sampo [command] --help" for more information about a command.
