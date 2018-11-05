@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// importCmd represents the import command
-var importCmd = &cobra.Command{
+// ImportCmd describes and implements the `sampo import` command
+var ImportCmd = &cobra.Command{
 	Use:   "import [url]",
 	Short: "Import data",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -21,7 +21,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(importCmd)
+	RootCmd.AddCommand(ImportCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

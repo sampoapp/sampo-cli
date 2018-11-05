@@ -10,8 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// listCmd represents the list command
-var listCmd = &cobra.Command{
+// ListCmd describes and implements the `sampo list` command
+var ListCmd = &cobra.Command{
 	Use:   "list [class]",
 	Short: "List data",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -46,7 +46,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(listCmd)
+	RootCmd.AddCommand(ListCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

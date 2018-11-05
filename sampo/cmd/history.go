@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// historyCmd represents the history command
-var historyCmd = &cobra.Command{
+// HistoryCmd describes and implements the `sampo history` command
+var HistoryCmd = &cobra.Command{
 	Use:   "history [class]",
 	Short: "Show history",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -21,7 +21,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(historyCmd)
+	RootCmd.AddCommand(HistoryCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

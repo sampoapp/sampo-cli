@@ -10,8 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// exportCmd represents the export command
-var exportCmd = &cobra.Command{
+// ExportCmd describes and implements the `sampo export` command
+var ExportCmd = &cobra.Command{
 	Use:   "export [uuid]...",
 	Short: "Export data",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -36,7 +36,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(exportCmd)
+	RootCmd.AddCommand(ExportCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

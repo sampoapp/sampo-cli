@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// todayCmd represents the today command
-var todayCmd = &cobra.Command{
+// TodayCmd describes and implements the `sampo today` command
+var TodayCmd = &cobra.Command{
 	Use:   "today",
 	Short: "Show today's agenda",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -21,7 +21,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(todayCmd)
+	RootCmd.AddCommand(TodayCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

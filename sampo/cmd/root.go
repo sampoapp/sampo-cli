@@ -14,7 +14,8 @@ var configFile string
 var debug bool
 var verbose bool
 
-var rootCmd = &cobra.Command{
+// RootCmd describes the `sampo` command
+var RootCmd = &cobra.Command{
 	Use:   "sampo",
 	Short: "Sampo command-line interface (CLI)",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -22,8 +23,9 @@ This is the command-line interface (CLI) for Sampo.`,
 	Version: "0.0.0",
 }
 
+// Execute implements the `sampo` command
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -31,10 +33,10 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", "", "Set config file (default: $HOME/.sampo/config.yaml)")
-	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "Enable debugging")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Be verbose")
-	rootCmd.SetVersionTemplate(`Sampo CLI {{printf "%s" .Version}}
+	RootCmd.PersistentFlags().StringVarP(&configFile, "config", "C", "", "Set config file (default: $HOME/.sampo/config.yaml)")
+	RootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "Enable debugging")
+	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Be verbose")
+	RootCmd.SetVersionTemplate(`Sampo CLI {{printf "%s" .Version}}
 `)
 }
 

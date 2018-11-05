@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// searchCmd represents the search command
-var searchCmd = &cobra.Command{
+// SearchCmd describes and implements the `sampo search` command
+var SearchCmd = &cobra.Command{
 	Use:   "search [keyword]",
 	Short: "Search data.",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -21,7 +21,7 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(searchCmd)
+	RootCmd.AddCommand(SearchCmd)
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

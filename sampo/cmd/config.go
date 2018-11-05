@@ -9,8 +9,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-// configCmd represents the config command
-var configCmd = &cobra.Command{
+// ConfigCmd describes and implements the `sampo config` command
+var ConfigCmd = &cobra.Command{
 	Use:   "config [var]",
 	Short: "Show configuration variables",
 	Long: `Sampo is a personal information manager (PIM) app.
@@ -30,5 +30,5 @@ This is the command-line interface (CLI) for Sampo.`,
 }
 
 func init() {
-	rootCmd.AddCommand(configCmd)
+	RootCmd.AddCommand(ConfigCmd)
 }
