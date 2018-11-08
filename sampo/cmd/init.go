@@ -19,6 +19,8 @@ This is the command-line interface (CLI) for Sampo.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("init has not been implemented yet") // TODO
 		os.Exit(1)
+		// TODO: Create the $HOME/.sampo directory.
+		// TODO: Download the schema.sql script to $HOME/.sampo/schema.sql.
 	},
 }
 
