@@ -5,9 +5,11 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/gofrs/uuid"
@@ -16,8 +18,6 @@ import (
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
 )
-
-type record = map[interface{}]interface{}
 
 var ownerNick, ownerName, ownerUUID string
 
@@ -78,8 +78,13 @@ func validateInputDirectory(arg string) {
 }
 
 func createSnapshot(inputDirPath string, sqlSchema string) {
+	dbPath := fmt.Sprintf("%s.db", inputDirPath) // FIXME
+
+	// Remove any existing database file:
+	os.Remove(dbPath)
+
 	// Create the database file:
-	db, err := store.Create(fmt.Sprintf("%s.db", inputDirPath))
+	db, err := store.Create(dbPath)
 	if err != nil {
 		panic(err)
 	}
@@ -117,7 +122,7 @@ func createSnapshot(inputDirPath string, sqlSchema string) {
 	}
 
 	var readerLatch, writerLatch sync.WaitGroup
-	records := make(chan record, 256)
+	records := make(chan store.Record, 256)
 
 	// Spawn the writer process:
 	writerLatch.Add(1)
@@ -142,7 +147,7 @@ func createSnapshot(inputDirPath string, sqlSchema string) {
 	}
 }
 
-func processInputFile(path string, output chan record, latch *sync.WaitGroup) {
+func processInputFile(path string, output chan store.Record, latch *sync.WaitGroup) {
 	defer latch.Done()
 
 	file, err := os.Open(path)
@@ -153,16 +158,45 @@ func processInputFile(path string, output chan record, latch *sync.WaitGroup) {
 
 	yaml := yaml.NewDecoder(bufio.NewReader(file))
 
-	record := make(map[interface{}]interface{})
-	for yaml.Decode(record) == nil {
+	for {
+		record := make(store.Record)
+		if err = yaml.Decode(record); err != nil {
+			if err != io.EOF {
+				panic(err)
+			}
+			break
+		}
 		output <- record
 	}
 }
 
-func writeRecords(db *store.Store, input chan record, latch *sync.WaitGroup) {
+func writeRecords(db *store.Store, input chan store.Record, latch *sync.WaitGroup) {
 	defer latch.Done()
 
 	for record := range input {
-		fmt.Println("Processing record:", record) // TODO
+		recordClasses := strings.Split(record["type"].(string), "/")
+		delete(record, "type")
+
+		//fmt.Println("Processing record:", recordClasses, record) // DEBUG
+
+		entityID, err := db.CreateEntity(record)
+		if err != nil {
+			panic(err)
+		}
+		delete(record, "uuid")
+		delete(record, "created_by")
+		delete(record, "created_at")
+		delete(record, "updated_by")
+		delete(record, "updated_at")
+
+		for i := range recordClasses {
+			if i > 0 {
+				break // TODO: support subclasses
+			}
+			recordClass := strings.Join(recordClasses[0:i+1], "_")
+			if _, err := db.CreateEntityOfClass(recordClass, entityID, record); err != nil {
+				panic(err)
+			}
+		}
 	}
 }
