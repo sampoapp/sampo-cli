@@ -8,9 +8,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/gofrs/uuid"
+
 	"github.com/sampoapp/sampo-cli/sampo/store"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var ownerNick, ownerName, ownerUUID string
 
 // BuildCmd describes and implements the `sampo build` command
 var BuildCmd = &cobra.Command{
@@ -37,6 +42,12 @@ This is the command-line interface (CLI) for Sampo.`,
 
 func init() {
 	RootCmd.AddCommand(BuildCmd)
+	BuildCmd.Flags().StringVarP(&ownerName, "owner-name", "", "Owner", "Set owner name")
+	BuildCmd.Flags().StringVarP(&ownerNick, "owner-nick", "", "owner", "Set owner nick")
+	BuildCmd.Flags().StringVarP(&ownerUUID, "owner-uuid", "", "", "Set owner UUID (default: random)")
+	viper.BindPFlag("owner.name", BuildCmd.Flags().Lookup("owner-name"))
+	viper.BindPFlag("owner.nick", BuildCmd.Flags().Lookup("owner-nick"))
+	viper.BindPFlag("owner.uuid", BuildCmd.Flags().Lookup("owner-uuid"))
 }
 
 func readSchemaFile() string {
@@ -73,13 +84,21 @@ func createSnapshot(inputDirPath string, sqlSchema string) {
 		panic(err)
 	}
 
-	if _, err := db.CreateUser("owner", "Owner"); err != nil {
+	userUUID := uuid.Nil
+	if viper.GetString("owner.uuid") != "" {
+		userUUID, err = uuid.FromString(viper.GetString("owner.uuid"))
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	if _, err := db.CreateUser(&userUUID, viper.GetString("owner.nick"), viper.GetString("owner.name")); err != nil {
 		panic(err)
 	}
 
 	var yamlFiles []string
 	err = filepath.Walk(inputDirPath, func(path string, info os.FileInfo, err error) error {
-		if err != nil && !info.IsDir() && filepath.Ext(path) == ".yaml" {
+		if err == nil && !info.IsDir() && filepath.Base(path)[0] != '.' && filepath.Ext(path) == ".yaml" {
 			yamlFiles = append(yamlFiles, path)
 		}
 		return nil

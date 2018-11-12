@@ -65,10 +65,13 @@ func (store *Store) Init(sqlSchema string) error {
 }
 
 // CreateUser
-func (store *Store) CreateUser(userNick string, userName string) (int, error) {
-	userUUID, err := uuid.NewV4()
-	if err != nil {
-		return 0, errors.Wrap(err, "uuid.NewV4 failed")
+func (store *Store) CreateUser(userUUID *uuid.UUID, userNick string, userName string) (int, error) {
+	if userUUID == nil {
+		newUUID, err := uuid.NewV4()
+		if err != nil {
+			return 0, errors.Wrap(err, "uuid.NewV4 failed")
+		}
+		userUUID = &newUUID
 	}
 	if _, err := store.db.Exec("INSERT INTO user (id, uuid, nick, name) VALUES (NULL, ?, ?, ?)", userUUID.String(), userNick, userName); err != nil {
 		return 0, errors.Wrap(err, "sql.Exec failed")
