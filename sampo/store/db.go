@@ -41,7 +41,7 @@ func Create(path string) (*Store, error) {
 
 // OpenDefault
 func OpenDefault() (*Store, error) {
-	return Open("./app.db")
+	return Open("./app.db") // FIXME
 }
 
 // Open

@@ -23,19 +23,22 @@ var ownerNick, ownerName, ownerUUID string
 
 // BuildCmd describes and implements the `sampo build` command
 var BuildCmd = &cobra.Command{
-	Use:   "build",
+	Use:   "build dir...",
 	Short: "Build database snapshot",
 	Long: `Sampo is a personal information manager (PIM) app.
 This is the command-line interface (CLI) for Sampo.`,
-	Args: cobra.MinimumNArgs(0),
+	Args: func(cmd *cobra.Command, args []string) error { //cobra.MinimumNArgs(0),
+		// Validate all input arguments:
+		for _, arg := range args {
+			if _, err := validateInputDirectory(arg); err != nil {
+				return err
+			}
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Read the schema file:
 		sqlSchema := readSchemaFile()
-
-		// Validate all input arguments:
-		for _, arg := range args {
-			validateInputDirectory(arg)
-		}
 
 		// Process the input arguments:
 		for _, arg := range args {
@@ -62,19 +65,18 @@ func readSchemaFile() string {
 	return string(data)
 }
 
-func validateInputDirectory(arg string) {
+func validateInputDirectory(arg string) (int, error) {
 	info, err := os.Stat(arg)
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Printf("%s does not exist\n", arg)
-			os.Exit(66) // EX_NOINPUT
+			return 66, fmt.Errorf("%s does not exist", arg) // EX_NOINPUT
 		}
 		panic(err)
 	}
 	if !info.IsDir() {
-		fmt.Printf("%s is not a directory\n", arg)
-		os.Exit(66) // EX_NOINPUT
+		return 66, fmt.Errorf("%s is not a directory", arg) // EX_NOINPUT
 	}
+	return 0, nil
 }
 
 func createSnapshot(inputDirPath string, sqlSchema string) {
