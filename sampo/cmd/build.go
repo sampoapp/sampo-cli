@@ -192,12 +192,15 @@ func writeRecords(db *store.Store, input chan store.Record, latch *sync.WaitGrou
 		delete(record, "updated_at")
 
 		for i := range recordClasses {
-			if i > 0 {
-				break // TODO: support subclasses
-			}
 			recordClass := strings.Join(recordClasses[0:i+1], "_")
-			if _, err := db.CreateEntityOfClass(recordClass, entityID, record); err != nil {
-				panic(err)
+			if i == 0 {
+				if _, err := db.CreateEntityOfClass(recordClass, entityID, record); err != nil {
+					panic(err)
+				}
+			} else {
+				if _, err := db.CreateEntityOfSubclass(recordClass, entityID); err != nil {
+					panic(err)
+				}
 			}
 		}
 	}

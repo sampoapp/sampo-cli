@@ -102,12 +102,12 @@ func canonicalizeValue(anyValue interface{}) interface{} {
 	switch value := anyValue.(type) {
 	case nil:
 		return nil
-	case int:
+	case int, int32, int64:
 		return value
 	case string:
 		return strings.TrimSpace(value)
 	default:
-		return nil // TODO
+		return anyValue // TODO
 	}
 }
 
@@ -126,6 +126,13 @@ func (store *Store) CreateEntityOfClass(className string, entityID int64, entity
 		return 0, errors.Wrap(err, "sql.Exec failed")
 	}
 	return entityID, nil
+}
+
+// CreateEntityOfSubclass
+func (store *Store) CreateEntityOfSubclass(className string, entityID int64) (int64, error) {
+	entity := make(Record)
+	entity["id"] = entityID
+	return store.CreateEntityOfClass(className, entityID, entity)
 }
 
 // Compact
