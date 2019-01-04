@@ -91,7 +91,7 @@ func (store *Store) CreateEntity(entity Record) (int64, error) {
 		}
 		entity["uuid"] = entityUUID.String()
 	}
-	result, err := store.db.Exec("INSERT INTO data (id, uuid, created_by, created_at, updated_by, updated_at) VALUES (NULL, ?, ?, ?, ?, ?)", entity["uuid"], 1, 0, nil, nil) // TODO
+	result, err := store.db.Exec("INSERT INTO data (id, uuid, created_by, created_at, updated_by, updated_at) VALUES (NULL, ?, ?, strftime('%s','now'), ?, ?)", entity["uuid"], 1, nil, nil)
 	if err != nil {
 		return 0, errors.Wrap(err, "sql.Exec failed")
 	}

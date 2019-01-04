@@ -194,6 +194,7 @@ func writeRecords(db *store.Store, input chan store.Record, latch *sync.WaitGrou
 		for i := range recordClasses {
 			recordClass := strings.Join(recordClasses[0:i+1], "_")
 			if i == 0 {
+				record["id"] = entityID
 				if _, err := db.CreateEntityOfClass(recordClass, entityID, record); err != nil {
 					panic(err)
 				}
