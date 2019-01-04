@@ -67,3 +67,10 @@ Reference
      -v, --verbose         Be verbose
 
    Use "sampo [command] --help" for more information about a command.
+
+See Also
+========
+
+- `Sampo App for Android <https://github.com/sampoapp/sampo>`__
+
+- `Sampo Demo Scenarios <https://github.com/sampoapp/sampo-demos>`__
