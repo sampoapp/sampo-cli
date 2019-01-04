@@ -19,7 +19,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var ownerNick, ownerName, ownerUUID string
+var dbPath, ownerNick, ownerName, ownerUUID string
 
 // BuildCmd describes and implements the `sampo build` command
 var BuildCmd = &cobra.Command{
@@ -49,6 +49,7 @@ This is the command-line interface (CLI) for Sampo.`,
 
 func init() {
 	RootCmd.AddCommand(BuildCmd)
+	BuildCmd.Flags().StringVarP(&dbPath, "output", "o", "", "Set output file")
 	BuildCmd.Flags().StringVarP(&ownerName, "owner-name", "", "Owner", "Set owner name")
 	BuildCmd.Flags().StringVarP(&ownerNick, "owner-nick", "", "owner", "Set owner nick")
 	BuildCmd.Flags().StringVarP(&ownerUUID, "owner-uuid", "", "", "Set owner UUID (default: random)")
@@ -80,7 +81,9 @@ func validateInputDirectory(arg string) (int, error) {
 }
 
 func createSnapshot(inputDirPath string, sqlSchema string) {
-	dbPath := fmt.Sprintf("%s.db", inputDirPath) // FIXME
+	if dbPath == "" {
+		dbPath = fmt.Sprintf("%s.db", inputDirPath)
+	}
 
 	// Remove any existing database file:
 	os.Remove(dbPath)
