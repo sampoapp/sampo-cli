@@ -20,6 +20,15 @@ Sampo Command-Line Interface (CLI)
 
 |
 
+Prerequisites
+=============
+
+To build the Sampo CLI, you will need the following software:
+
+- `GNU Make <https://www.gnu.org/software/make/>`__ 3.81+
+
+- `Go <https://golang.org/>`__ 1.11+
+
 Installation
 ============
 
